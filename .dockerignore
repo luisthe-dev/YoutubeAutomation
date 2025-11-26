@@ -1,0 +1,12 @@
+/vendor
+/node_modules
+/.git
+/.github
+/.vscode
+.env
+.phpunit.result.cache
+docker-compose.yml
+Dockerfile
+README.md
+public/storage
+

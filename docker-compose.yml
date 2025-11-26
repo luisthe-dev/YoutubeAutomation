@@ -1,0 +1,25 @@
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: youtube-automation-app
+        container_name: youtube_app
+        restart: unless-stopped
+        tty: true
+        env_file: .env
+        ports:
+            - "8000:1920"
+
+    queue:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: youtube-automation-app
+        container_name: youtube_queue
+        restart: unless-stopped
+        tty: true
+        env_file: .env
+        volumes:
+            - ./:/var/www
+        command: php artisan queue:work --tries=3 --timeout=3600
