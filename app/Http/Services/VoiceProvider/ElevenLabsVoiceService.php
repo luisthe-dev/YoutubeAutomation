@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Http\Services\VoiceProvider;
 
-use App\Interfaces\AudioGeneratorInterface;
+use App\Http\Interfaces\AudioGeneratorInterface;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 

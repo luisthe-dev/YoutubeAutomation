@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Http\Services\ImageProvider;
 
-use App\Interfaces\ImageGeneratorInterface;
+use App\Http\Interfaces\ImageGeneratorInterface;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -36,7 +36,7 @@ class PollinationsImageService implements ImageGeneratorInterface
             // $url .= "&key={$apiKey}"; 
         }
 
-        $response = Http::timeout(60)->withHeaders($headers)->get($url);
+        $response = Http::timeout(120)->withHeaders($headers)->get($url);
 
         if ($response->successful()) {
             $contentType = $response->header('Content-Type');

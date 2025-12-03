@@ -1,30 +1,30 @@
 <?php
 
-namespace App\Services;
+namespace App\Http\Services\TextProvider;
 
-use App\Interfaces\TextGeneratorInterface;
+use App\Http\Interfaces\TextGeneratorInterface;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class GroqTextService implements TextGeneratorInterface
+class ChatGptTextService implements TextGeneratorInterface
 {
     protected $apiKey;
     protected $model;
-    protected $baseUrl = 'https://api.groq.com/openai/v1/chat/completions';
+    protected $baseUrl = 'https://api.openai.com/v1/chat/completions';
 
     public function __construct()
     {
-        $this->apiKey = env('GROQ_API_KEY');
-        $this->model = env('GROQ_TEXT_MODEL', 'llama3-70b-8192');
+        $this->apiKey = env('OPENAI_API_KEY');
+        $this->model = env('OPENAI_TEXT_MODEL', 'gpt-4o');
     }
 
     public function generate(string $prompt): string
     {
         if (!$this->apiKey) {
-            throw new \Exception("GROQ_API_KEY is not set.");
+            throw new \Exception("OPENAI_API_KEY is not set.");
         }
 
-        Log::info("Generating text with Groq model: {$this->model}");
+        Log::info("Generating text with ChatGPT model: {$this->model}");
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->apiKey,
@@ -37,7 +37,7 @@ class GroqTextService implements TextGeneratorInterface
         ]);
 
         if ($response->failed()) {
-            throw new \Exception("Groq API failed: " . $response->body());
+            throw new \Exception("ChatGPT API failed: " . $response->body());
         }
 
         return $response->json('choices.0.message.content');
@@ -46,10 +46,10 @@ class GroqTextService implements TextGeneratorInterface
     public function generateJson(string $prompt): array
     {
         if (!$this->apiKey) {
-            throw new \Exception("GROQ_API_KEY is not set.");
+            throw new \Exception("OPENAI_API_KEY is not set.");
         }
 
-        Log::info("Generating JSON with Groq model: {$this->model}");
+        Log::info("Generating JSON with ChatGPT model: {$this->model}");
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->apiKey,
@@ -64,15 +64,15 @@ class GroqTextService implements TextGeneratorInterface
         ]);
 
         if ($response->failed()) {
-            throw new \Exception("Groq API failed: " . $response->body());
+            throw new \Exception("ChatGPT API failed: " . $response->body());
         }
 
         $content = $response->json('choices.0.message.content');
         $data = json_decode($content, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            Log::error("Failed to decode JSON from Groq: " . json_last_error_msg());
-            throw new \Exception("Failed to decode JSON from Groq response.");
+            Log::error("Failed to decode JSON from ChatGPT: " . json_last_error_msg());
+            throw new \Exception("Failed to decode JSON from ChatGPT response.");
         }
 
         return $data;

@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Support\Facades\Storage;
-use App\Services\DirectorService;
+use App\Http\Services\DirectorService;
 use App\Jobs\ProcessVideoJob;
 use Mockery;
 

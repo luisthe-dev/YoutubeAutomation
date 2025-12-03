@@ -1,22 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Http\Services\VoiceProvider;
 
-use App\Interfaces\AudioGeneratorInterface;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-
-class PollinationsVoiceService implements AudioGeneratorInterface
-{
-    /**
-     * Generate audio from text.
-     *
-<?php
-
-namespace App\Services;
-
-use App\Interfaces\AudioGeneratorInterface;
+use App\Http\Interfaces\AudioGeneratorInterface;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;

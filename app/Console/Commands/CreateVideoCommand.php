@@ -3,16 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Jobs\ProcessVideoJob;
-use App\Services\DirectorService;
+use App\Http\Services\DirectorService;
 use Illuminate\Console\Command;
 
 class CreateVideoCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     /**
      * The name and signature of the console command.
      *
@@ -26,7 +21,9 @@ class CreateVideoCommand extends Command
                             {--text-driver= : Preferred text driver}
                             {--voice-fallback= : Secondary voice driver}
                             {--image-fallback= : Secondary image driver}
-                            {--text-fallback= : Secondary text driver}';
+                            {--text-fallback= : Secondary text driver}
+                            {--duration= : Target video duration in seconds}
+                            {--manual-render : Print python command instead of running it}';
 
     /**
      * The console command description.
@@ -84,10 +81,13 @@ class CreateVideoCommand extends Command
             'image_fallback' => $this->option('image-fallback'),
             'text_fallback' => $this->option('text-fallback'),
         ];
+
+        $duration = $this->option('duration') ? (int)$this->option('duration') : null;
+        $manualRender = $this->option('manual-render');
         
         $this->info("Dispatching video creation job for: {$choice}");
-        
-        ProcessVideoJob::dispatch($topic, $choice, $useBackups, $preferences);
+
+        ProcessVideoJob::dispatch($topic, $choice, $useBackups, $preferences, null, $duration, $manualRender);
         
         $this->info("Job dispatched! Check the logs or storage/app/public/videos/ for progress.");
     }

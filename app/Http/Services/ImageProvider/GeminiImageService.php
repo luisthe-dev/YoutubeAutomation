@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Http\Services\ImageProvider;
 
-use App\Interfaces\ImageGeneratorInterface;
+use App\Http\Interfaces\ImageGeneratorInterface;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,23 +21,20 @@ class GeminiImageService implements ImageGeneratorInterface
             throw new \Exception("GEMINI_API_KEY not set");
         }
 
-        // Using Gemini API (Gemini 2.5 Flash Image)
-        $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key={$this->apiKey}";
+        // Using Gemini API (Imagen 3)
+        $url = "https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-001:predict?key={$this->apiKey}";
 
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
         ])->post($url, [
-            'contents' => [
+            'instances' => [
                 [
-                    'parts' => [
-                        ['text' => $prompt]
-                    ]
+                    'prompt' => $prompt,
                 ]
             ],
-            'generationConfig' => [
-                'responseModalities' => ['IMAGE'],
-                'candidateCount' => 1,
-                'imageConfig' => ['aspectRatio' => '16:9'],
+            'parameters' => [
+                'sampleCount' => 1,
+                'aspectRatio' => '16:9',
             ],
         ]);
 

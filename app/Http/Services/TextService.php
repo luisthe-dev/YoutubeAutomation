@@ -1,8 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\Http\Services;
 
-use App\Interfaces\TextGeneratorInterface;
+use App\Http\Interfaces\TextGeneratorInterface;
+use App\Http\Services\TextProvider\ChatGptTextService;
+use App\Http\Services\TextProvider\GeminiTextService;
+use App\Http\Services\TextProvider\GroqTextService;
+use App\Http\Services\TextProvider\PollinationsTextService;
 use Illuminate\Support\Facades\Log;
 
 class TextService implements TextGeneratorInterface

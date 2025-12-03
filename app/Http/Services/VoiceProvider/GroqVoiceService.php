@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Http\Services\VoiceProvider;
 
-use App\Interfaces\AudioGeneratorInterface;
+use App\Http\Interfaces\AudioGeneratorInterface;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -17,7 +17,7 @@ class GroqVoiceService implements AudioGeneratorInterface
     {
         $this->apiKey = env('GROQ_API_KEY');
         $this->model = env('GROQ_AUDIO_MODEL', 'playai-tts'); 
-        $this->voice = env('GROQ_VOICE_ID', 'en-US-Standard-A'); 
+        $this->voice = env('GROQ_VOICE_ID', 'Briggs-PlayAI');
     }
 
     public function generate(string $text, string $outputFilename): string

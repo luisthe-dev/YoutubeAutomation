@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Http\Services\TextProvider;
 
-use App\Interfaces\TextGeneratorInterface;
+use App\Http\Interfaces\TextGeneratorInterface;
 use Gemini\Laravel\Facades\Gemini;
 use Illuminate\Support\Facades\Log;
 
@@ -20,7 +20,13 @@ class GeminiTextService implements TextGeneratorInterface
     {
         Log::info("Generating text with Gemini model: {$this->model}");
         
-        $result = Gemini::generativeModel(model: $this->model)->generateContent($prompt);
+        $apiKey = config('gemini.api_key');
+        $client = \Gemini::factory()
+            ->withApiKey($apiKey)
+            ->withHttpClient(new \GuzzleHttp\Client(['timeout' => 120]))
+            ->make();
+
+        $result = $client->generativeModel(model: $this->model)->generateContent($prompt);
         return $result->text();
     }
 
@@ -32,11 +38,19 @@ class GeminiTextService implements TextGeneratorInterface
         // Gemini Pro often handles "Return JSON" prompts well.
         $jsonPrompt = $prompt . "\n\nReturn the result as a valid JSON object.";
         
-        $result = Gemini::generativeModel(model: $this->model)->generateContent($jsonPrompt);
+        $apiKey = config('gemini.api_key');
+        $client = \Gemini::factory()
+            ->withApiKey($apiKey)
+            ->withHttpClient(new \GuzzleHttp\Client(['timeout' => 120]))
+            ->make();
+        
+        $result = $client->generativeModel(model: $this->model)->generateContent($jsonPrompt);
         $text = $result->text();
 
-        // Clean up markdown code blocks if present
-        $text = preg_replace('/^```json\s*|\s*```$/', '', $text);
+        // Extract JSON from markdown code blocks if present
+        if (preg_match('/```(?:json)?\s*([\s\S]*?)\s*```/', $text, $matches)) {
+            $text = $matches[1];
+        }
         
         $data = json_decode($text, true);
         

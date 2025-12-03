@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Http\Services\ImageProvider;
 
-use App\Interfaces\ImageGeneratorInterface;
+use App\Http\Interfaces\ImageGeneratorInterface;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 

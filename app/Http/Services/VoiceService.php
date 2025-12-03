@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Services;
+namespace App\Http\Services;
 
-use App\Interfaces\AudioGeneratorInterface;
+use App\Http\Interfaces\AudioGeneratorInterface;
+use App\Http\Services\VoiceProvider\ElevenLabsVoiceService;
+use App\Http\Services\VoiceProvider\GroqVoiceService;
+use App\Http\Services\VoiceProvider\PollinationsVoiceService;
 
 class VoiceService implements AudioGeneratorInterface
 {

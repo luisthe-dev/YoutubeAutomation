@@ -1,7 +1,7 @@
 FROM php:8.2-cli
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y git  curl  libpng-dev  libonig-dev  libxml2-dev  zip  unzip  sqlite3  libsqlite3-dev  ffmpeg  build-essential  python3  python3-pip  python3-venv  libcairo2-dev  libpango1.0-dev  texlive-full
+RUN apt-get update && apt-get install -y git  curl  libpng-dev  libonig-dev  libxml2-dev  zip  unzip  sqlite3  libsqlite3-dev  ffmpeg  build-essential  python3  python3-pip  python3-venv  libcairo2-dev  libpango1.0-dev  texlive-latex-extra texlive-fonts-recommended texlive-latex-recommended
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
@@ -20,7 +20,8 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Install Python dependencies
 # We install manim and google-generativeai as requested
-RUN pip install --no-cache-dir manim google-generativeai
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy existing application directory contents
 COPY . /var/www

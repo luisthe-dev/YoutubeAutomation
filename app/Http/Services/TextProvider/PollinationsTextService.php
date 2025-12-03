@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Http\Services\TextProvider;
 
-use App\Interfaces\TextGeneratorInterface;
+use App\Http\Interfaces\TextGeneratorInterface;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 

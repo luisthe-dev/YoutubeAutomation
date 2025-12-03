@@ -1,8 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\Http\Services;
 
-use App\Interfaces\ImageGeneratorInterface;
+use App\Http\Interfaces\ImageGeneratorInterface;
+use App\Http\Services\ImageProvider\ChatGptImageService;
+use App\Http\Services\ImageProvider\GeminiImageService;
+use App\Http\Services\ImageProvider\PollinationsImageService;
+use App\Http\Services\ImageProvider\ReplicateImageService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
